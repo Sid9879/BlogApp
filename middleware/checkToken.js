@@ -5,13 +5,13 @@ let JWT_SECRET = "ShreeRam"
 const checkToken = async(req,res,next)=>{
     try {
         let token = req.headers.authorization;
-        // console.log(token)
+       
         if(!token){
             return res.json({msg:"provide a token",success:false})
         }
     console.log(token)
     let decode = jwt.verify(token,JWT_SECRET );
-    // console.log(decode)
+    
     req.user = decode;
     next()
     } catch (error) {

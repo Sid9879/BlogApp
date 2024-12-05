@@ -2,9 +2,9 @@ let postCollection = require('../models/PostCollection')
 
 const createPost = async(req,res)=>{
 const {title,description,file} = req.body
-// const user = (req.user)
+
 let id = req.user._id
-console.log(id)
+
 try {
     let data = await postCollection.create({
         title,
@@ -16,9 +16,7 @@ try {
 } catch (error) {
     res.send({msg:"error in creating post",success:false,error:error.message})
 }
-// res.send(req.user)
-// console.log(user)
-// res.send("post created")
+
 }
 
 const getAllPost = async(req,res)=>{
@@ -70,11 +68,9 @@ res.json({msg:"post fetched successfully",success:true,posts})
 const likePost = async(req,res)=>{
     let {postId} = req.params;
     let userId = req.user._id;
-    // console.log(postId)
-    // console.log('userid=',userId)
+
    try {
     let post = await postCollection.findById(postId)
-    console.log(post)
     if(post.likes.includes(userId)){
         post.likes.pull(userId)
         await post.save()
@@ -95,7 +91,6 @@ const likePost = async(req,res)=>{
 const commentPost = async(req,res)=>{
     const {postId} = req.params;
     const userId = req.user._id;
-    // console.log("userid=",userId)
     const {text} = req.body;
 
  
@@ -103,7 +98,6 @@ const commentPost = async(req,res)=>{
    try {
     let post = await postCollection.findById(postId);
     post.comments.push({user:userId,text:text})
-    // .sort({createdAt:-1});
     await post.save();
     let date = Date.now();
    

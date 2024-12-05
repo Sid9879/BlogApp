@@ -3,7 +3,7 @@ const Message = require("../models/Messages")
 
 const senderMessage = async(req,res)=>{
      let sender = req.user._id;
-   //   console.log(sender)
+   
      const {recieverId} = req.params;
      const {text} = req.body
 

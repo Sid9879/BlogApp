@@ -14,14 +14,13 @@ if(!name){
     return res.json({msg:"name is required"}) //its use when your not added the required condition in user collection
 }
 let existingUser = await UserCollection.findOne({email}); // user exists or not
-console.log(existingUser)
+
 if(existingUser){
    return res.json({msg:"user already registered",success:false})
 }
 try {
     let hashedPassword = bcrypt.hashSync(password, salt); // chaning password by using hashed password
-    // console.log(hashedPassword)
-    // console.log(password)
+  
     let data = await UserCollection.create({
         name,
         email,
@@ -83,17 +82,15 @@ const deleteUser = async(req,res)=>{
         let paramId = req.params._id
         let userId = req.user._id //its get from token
     
-        // console.log("logged=",userId)
-        // console.log("logged delete=",paramId)
     
         if(userId===paramId){ //checking token and its id which u mix on it
             let data = await UserCollection.findByIdAndDelete(userId)
             res.json({msg:"user deleted successfully", success:true})
     
-            // console.log("you can delete")
+            
         }
         else{
-            // console.log("invalid")
+           
             res.json({msg:"not authorized to delete", success:false})
         }  
    
@@ -103,7 +100,7 @@ const deleteUser = async(req,res)=>{
 }
 const getUserDetails = async(req,res)=>{
     let userId = req.user._id
-    // console.log("userId=",userId)
+    
     try {
         let user = await UserCollection.findById(userId).select("-password").populate({path:'followers',select:['name','profilePic']}).populate({path:"followings",select:['name','profilePic']});
     res.json({msg:"user fetched successfully",success:true,user})
@@ -156,7 +153,7 @@ async function sendMail(email,reset_token){
         text:`Please click the link below to choose a new password: \n \n https://blogapp-anlu.onrender.com/users/forgetPassword/${reset_token} \n  \n \n Regards \n Siddharth Singh`
       });
     
-    //   console.log("Message sent: %s", info.messageId);
+    
 }
 
 const forgetPassword = async (req, res) => {
@@ -213,9 +210,9 @@ res.json({msg:"Password updated successfully",success:true})
 }
 
 const searchUser = async(req,res)=>{
-// console.log(req,query)
+
       let {q} = req.query;
-    //   console.log(q)
+    
 
       if(q.length>0){
         let regex = new RegExp(q,'i');
@@ -241,14 +238,12 @@ const getSingleUser = async(req,res)=>{
 const FollowUser = async(req,res)=>{
     let {friendId} = req.params; //other user id
     let userId = req.user._id; //Logged-in user ID by token
-    // console.log(userId)
+   
   try {
     let user = await UserCollection.findById(userId)
-    // .populate({path:'followings',select:['name','profilePic']})
-    // .select(['name profilePic followings']);
+   
     let friend = await UserCollection.findById(friendId)
-    // .populate({path:'followings',select:['name','profilePic']})
-    // .select(['name profilePic followers']);
+   
  
     
  

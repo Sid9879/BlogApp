@@ -153,7 +153,7 @@ async function sendMail(email,reset_token){
         from: 'singhsiddharth1438@gmail.com', // sender address
         to: email, // list of receivers
         subject: "Request of Password reset", // Subject line
-        text:`Please click the link below to choose a new password: \n \n http://localhost:8080/users/forgetPassword/${reset_token} \n  \n \n Regards \n Siddharth Singh`
+        text:`Please click the link below to choose a new password: \n \n https://blogapp-anlu.onrender.com/users/forgetPassword/${reset_token} \n  \n \n Regards \n Siddharth Singh`
       });
     
     //   console.log("Message sent: %s", info.messageId);

@@ -53,7 +53,31 @@ const getConversation = async(req,res)=>{
 
 }
 
+const DeleteConversation = async (req, res) => {
+   let userId = req.user._id;  // by token
+   let receiverId = req.params.receiverId; 
+   console.log(userId);
+   console.log(receiverId) // Get receiverId from the route params
+
+   try {
+      
+      let conversation = await Conversation.findOneAndDelete({
+         members: { $all: [userId, receiverId] }
+      });
+
+      if (!conversation) {
+         return res.json({ msg: "Conversation not found", success: false });
+      }
+
+      res.json({ msg: "Conversation deleted successfully", success: true });
+   } catch (error) {
+      console.error(error);
+      res.json({ msg: "Error in deleting conversation", success: false });
+   }
+}
+
 module.exports = {
     senderMessage,
-    getConversation
+    getConversation,
+    DeleteConversation
 }

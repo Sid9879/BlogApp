@@ -65,12 +65,12 @@ function removeUser(socketId) {
 }
 
 io.on("connection", (socket) => {
-    console.log("A user connected: ", socket.id);
+    // console.log("A user connected: ", socket.id);
 
     socket.on('addUser', (userId) => {
         console.log("User joined with ID: ", userId);
         addUser(userId, socket.id);
-        console.log("Current users: ", Array.from(user.entries()));
+        // console.log("Current users: ", Array.from(user.entries()));
     });
 
     socket.on('sendMessage', ({ text, sender, reciever }) => {
@@ -84,7 +84,7 @@ io.on("connection", (socket) => {
     socket.on('disconnect', () => {
         console.log("User disconnected: ", socket.id);
         removeUser(socket.id);
-        console.log("Updated user map: ", Array.from(user.entries()));
+        // console.log("Updated user map: ", Array.from(user.entries()));
     });
 });
 

@@ -55,7 +55,7 @@ const getConversation = async(req,res)=>{
 
 const DeleteConversation = async (req, res) => {
    let userId = req.user._id;  // by token
-   let {receiverId} = req.params; 
+   let receiverId = req.params; 
    console.log(userId);
    console.log(receiverId) // Get receiverId from the route params
 

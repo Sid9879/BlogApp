@@ -55,14 +55,14 @@ const getConversation = async(req,res)=>{
 
 const DeleteConversation = async (req, res) => {
    let userId = req.user._id;  // by token
-   let {receiverId} = req.params;
-   // console.log(userId);
-   // console.log(receiverId) // Get receiverId from the route params
+   let {recieverId} = req.params;
+   console.log(userId);
+   console.log(recieverId) // Get receiverId from the route params
 
    try {
       
       let conversation = await Conversation.findOneAndDelete({
-         members: { $all: [userId, receiverId] }
+         members:{ $all: [userId, recieverId] }
       });
 
       
@@ -70,12 +70,12 @@ const DeleteConversation = async (req, res) => {
          return res.json({ msg: "Conversation not found", success: false });
       }
 
-      // await Message.deleteMany({ conversationId: conversation._id });
+      
 
       res.json({ msg: "Conversation deleted successfully", success: true });
    } catch (error) {
       console.error(error);
-      res.json({ msg: "Error in deleting conversation", success: false });
+      res.json({ msg: "Error in deleting conversation", success: false ,error:error.message});
    }
 }
 

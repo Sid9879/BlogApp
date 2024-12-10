@@ -5,7 +5,7 @@ const router = express.Router();
 
 router.post('/send/:recieverId',checkToken,senderMessage)
 router.get('/getMessage/:recieverId',checkToken,getConversation)
-router.delete('/delete/:_id',checkToken,DeleteConversation)
+router.delete('/delete/:recieverId',checkToken,DeleteConversation)
 
 
 

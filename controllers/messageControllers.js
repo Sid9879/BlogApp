@@ -95,10 +95,40 @@ let conversation = await Conversation.findOne({members:{$all:[senderId,receiverI
    }
  };
 
+ const recentChat = async(req,res) =>{
+   const senderId = req.user._id; // Get the sender ID from the authenticated user
+
+    try {
+        // Find all conversations where the sender is a member
+        let conversations = await Conversation.find({ members: senderId })
+            .populate({ path: 'members' ,match: { _id: { $ne: senderId } }, select: ['name', 'profilePic']}) // Populate member details
+            .populate('messages') // Optionally populate messages if needed
+            .select('members messages'); // Select only members and messages fields
+
+            res.json({ msg: "Recent chats fetched successfully", success: true, conversations });
+      //   Format the response to include receiver information
+      //   const chatList = conversations.map(conversation => {
+      //       const otherMember = conversation.members.find(member => member._id.toString() !== senderId.toString());
+      //       return {
+      //           receiver: otherMember,
+      //           messages: conversation.messages
+      //       };
+      //   });
+
+      //   res.json({ msg: "Chats found", success: true, chats: chatList });
+    } catch (error) {
+        console.error(error);
+        res.json({ msg: "Error in fetching chats", success: false, error: error.message });
+    }
+ }
+
+
+
 module.exports = {
     senderMessage,
     getConversation,
     DeleteConversation,
-    fetchSenderMessage
+    fetchSenderMessage,
+    recentChat
     
 }

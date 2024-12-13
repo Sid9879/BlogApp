@@ -79,8 +79,26 @@ const DeleteConversation = async (req, res) => {
    }
 }
 
+const fetchSenderMessage = async (req, res) => {
+   try {
+     const messageId = req.params.messageId; 
+     const senderId = req.user._id;
+     const receiverId = req.params.receiverId// ID of the message to be deleted
+let message = await Message.findByIdAndDelete(messageId);
+let conversation = await Conversation.findOne({members:{$all:[senderId,receiverId]}})
+   conversation.messages.pull(messageId)
+   await conversation.save();
+   res.json({msg:"deleted successfully",success:true})
+   }
+   catch(error){
+      res.json({msg:"error in fetching sender message",success:false,error:error.message})
+   }
+ };
+
 module.exports = {
     senderMessage,
     getConversation,
-    DeleteConversation
+    DeleteConversation,
+    fetchSenderMessage
+    
 }
